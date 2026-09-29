@@ -1,0 +1,64 @@
+/*
+  Abertura: peça de motion em 4 tempos.
+  1. Escuro: um fio de ouro desenha o contorno do GS.
+  2. Folha: o ouro preenche o monograma de baixo para cima e um brilho corre pela folha.
+  3. Luz: o ambiente clareia para o papel, com sombra de folhas; entram nome e assinatura.
+  4. Voo: o GS viaja até o topo do site e assenta atrás da foto.
+*/
+.abertura {
+  position: fixed; inset: 0; z-index: 100;
+  pointer-events: none;
+  contain: strict;
+}
+.abertura.is-bloqueando { pointer-events: auto; }
+.ab-papel { position: absolute; inset: 0; overflow: hidden; }
+.ab-noite { position: absolute; inset: 0; background: var(--color-noite); }
+.ab-noite.is-abrindo {
+  --raio: -30vmax;
+  -webkit-mask: radial-gradient(circle at 50% var(--cy, 44%), transparent var(--raio), #000 calc(var(--raio) + 30vmax));
+  mask: radial-gradient(circle at 50% var(--cy, 44%), transparent var(--raio), #000 calc(var(--raio) + 30vmax));
+}
+html[data-abertura="rapida"] .ab-noite { opacity: 0; }
+
+/* Palco: posiciona o espaço do GS e a assinatura no centro da tela. */
+.ab-palco {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: clamp(18px, 3.2vh, 34px);
+  padding-bottom: 4vh;
+}
+.ab-lugar { height: min(40vh, 58vw); aspect-ratio: 1148 / 1324; }
+
+/* O GS da abertura tem o tamanho final (o do topo) e começa reduzido; assim fica nítido no voo. */
+.ab-voo-x, .ab-voo-y { position: fixed; left: 0; top: 0; will-change: transform; }
+.ab-voo-y { transform-origin: 0 0; }
+.ab-mono { position: relative; }
+.ab-mono > * { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ab-contorno { overflow: visible; }
+.ab-contorno path { fill: none; stroke: var(--color-ouro-claro); stroke-linejoin: round; stroke-linecap: round; }
+.ab-folha { opacity: 0; clip-path: inset(100% 0 0 0); object-fit: contain; }
+.ab-brilho {
+  opacity: 0;
+  -webkit-mask: var(--mascara, none) center / 100% 100% no-repeat;
+  mask: var(--mascara, none) center / 100% 100% no-repeat;
+  overflow: hidden;
+}
+.ab-brilho > span {
+  position: absolute; top: -20%; bottom: -20%; left: 0; width: 42%;
+  background: linear-gradient(100deg, rgb(255 247 230 / 0) 0%, rgb(255 247 230 / .9) 50%, rgb(255 247 230 / 0) 100%);
+  transform: translate3d(-120%, 0, 0) skewX(-14deg);
+  mix-blend-mode: overlay;
+}
+
+.ab-assinatura { display: flex; flex-direction: column; align-items: center; gap: clamp(10px, 1.6vh, 16px); width: min(560px, 80vw); }
+.ab-nome { width: min(460px, 74vw); clip-path: inset(0 50% 0 50%); }
+.ab-nome path, .ab-tagline path { fill: var(--color-ouro-escuro); }
+.ab-tagline { width: min(250px, 44vw); opacity: 0; }
+.ab-barra { position: relative; width: min(300px, 56vw); height: 1px; margin-top: clamp(10px, 2.4vh, 26px); }
+.ab-barra::before, .ab-barra > span {
+  content: ''; position: absolute; inset: 0; transform-origin: left center;
+}
+.ab-barra::before { background: rgb(138 106 56 / .25); transform: scaleX(var(--trilho, 0)); transition: transform .9s var(--ease-luxo); }
+.ab-barra > span { background: var(--color-ouro-escuro); transform: scaleX(0); }
+
+html[data-abertura="rapida"] .ab-folha { clip-path: none; }

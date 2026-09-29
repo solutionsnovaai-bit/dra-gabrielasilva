@@ -1,0 +1,18 @@
+/* Mona Sans (GitHub, licença OFL) em arquivo variável: peso 200–900 e largura 75–125%. */
+@font-face {
+  font-family: 'Mona Sans';
+  src: url('/fonts/mona-sans.woff2') format('woff2');
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+/* Reserva com métricas parecidas, para o texto não pular quando a fonte chega. */
+@font-face {
+  font-family: 'Mona Sans Reserva';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
+  size-adjust: 103%;
+  ascent-override: 94%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+}

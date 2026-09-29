@@ -1,0 +1,66 @@
+import { useCallback, useEffect, useState } from 'react'
+import { MotionPreferencesProvider } from './hooks/useMotionPreferences'
+import { useSmoothScroll } from './hooks/useSmoothScroll'
+import Abertura, { modoAbertura } from './components/abertura/Abertura'
+import Topo from './components/layout/Topo'
+import Rodape from './components/layout/Rodape'
+import WhatsAppFab from './components/layout/WhatsAppFab'
+import Hero from './components/secoes/Hero'
+import type { Fase } from './components/secoes/Hero'
+import Faixa from './components/secoes/Faixa'
+import Manifesto from './components/secoes/Manifesto'
+import Universos from './components/secoes/Universos'
+import Cuidados from './components/secoes/Cuidados'
+import Galeria from './components/secoes/Galeria'
+import Nutricao from './components/secoes/Nutricao'
+import Doutora from './components/secoes/Doutora'
+import Passos from './components/secoes/Passos'
+import Duvidas from './components/secoes/Duvidas'
+import Agendar from './components/secoes/Agendar'
+import DadosEstruturados from './components/layout/DadosEstruturados'
+
+function Site() {
+  const [fase, setFase] = useState<Fase>(() => (modoAbertura() === 'nenhuma' ? 'pronto' : 'abertura'))
+  const saida = useCallback(() => setFase(f => (f === 'abertura' ? 'saida' : f)), [])
+  const fim = useCallback(() => setFase('pronto'), [])
+  const pronto = fase === 'pronto'
+  useSmoothScroll(pronto)
+
+  /* Durante a abertura a página fica parada no topo; depois, se veio com #âncora, vai até ela. */
+  useEffect(() => {
+    if (pronto) {
+      document.documentElement.classList.remove('travado')
+      const alvo = location.hash && document.querySelector(location.hash)
+      if (alvo) window.setTimeout(() => alvo.scrollIntoView({ behavior: 'smooth', block: 'start' }), 250)
+      return
+    }
+    window.scrollTo(0, 0)
+    document.documentElement.classList.add('travado')
+  }, [pronto])
+
+  return <>
+    <a className="pular-link" href="#conteudo">Pular para o conteúdo</a>
+    {!pronto && <Abertura onSaida={saida} onFim={fim} />}
+    <Topo visivel={fase !== 'abertura'} />
+    <main id="conteudo">
+      <Hero fase={fase} />
+      <Faixa />
+      <Manifesto />
+      <Universos />
+      <Cuidados />
+      <Galeria />
+      <Nutricao />
+      <Doutora />
+      <Passos />
+      <Duvidas />
+      <Agendar />
+    </main>
+    <Rodape />
+    <WhatsAppFab liberado={fase !== 'abertura'} />
+    <DadosEstruturados />
+  </>
+}
+
+export default function App() {
+  return <MotionPreferencesProvider><Site /></MotionPreferencesProvider>
+}

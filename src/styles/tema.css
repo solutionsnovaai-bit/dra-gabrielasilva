@@ -1,0 +1,34 @@
+/*
+  Cores e tokens. Só as cores do logotipo: papel, areia, café e ouro, sem degradê.
+*/
+@theme {
+  --color-papel: #EDE4D8;
+  --color-marfim: #F6F1EA;
+  --color-areia: #E2D5C4;
+  --color-pedra: #CBBAA5;
+  --color-nude: #E7D2C6;
+  --color-cafe: #2B1F1A;
+  --color-cafe-2: #3A2A23;
+  --color-noite: #1E1612;
+  --color-ouro: #B08D57;
+  --color-ouro-escuro: #8A6A38;
+  --color-ouro-texto: #765A2D;
+  --color-ouro-claro: #D1B27A;
+  --color-tinta: #231A15;
+  --color-tinta-2: #5E5049;
+  --color-linha: rgb(43 31 26 / 0.14);
+
+  --font-sans: 'Mona Sans', 'Mona Sans Reserva', ui-sans-serif, system-ui, sans-serif;
+
+  --ease-luxo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-cortina: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-suave: cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+:root {
+  --margem: clamp(20px, 5.2vw, 76px);
+  --largura: 1380px;
+  --topo-h: 72px;
+  --secao-y: clamp(96px, 13vw, 196px);
+}
+@media (max-width: 767px) { :root { --topo-h: 64px; } }
