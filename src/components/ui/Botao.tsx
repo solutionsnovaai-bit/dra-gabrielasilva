@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import type { ReactNode, PointerEvent } from 'react'
-import { motion, useMotionValue, useSpring } from 'motion/react'
+import { m, useMotionValue, useSpring } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
 import { useMotionPreferences } from '../../hooks/useMotionPreferences'
 import BrandIcon from './BrandIcon'
@@ -33,12 +33,12 @@ export function Botao({ href, children, variante = 'cafe', className = '', exter
   }
   const soltar = () => { mx.set(0); my.set(0) }
   const cls = `botao ${variante === 'claro' ? 'botao-claro' : variante === 'ouro' ? 'botao-ouro' : ''} ${className}`
-  return <motion.a ref={ref} href={href} className={cls} style={{ x, y }} onPointerMove={mover} onPointerLeave={soltar}
+  return <m.a ref={ref} href={href} className={cls} style={{ x, y }} onPointerMove={mover} onPointerLeave={soltar}
     {...(externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})} aria-label={rotuloAcessivel}>
     <span className="botao-icone">{icone ?? <BrandIcon brand="whatsapp" />}</span>
     <span className="botao-rolo"><span>{children}</span><span aria-hidden="true">{children}</span></span>
     <ArrowUpRight className="botao-seta" aria-hidden="true" strokeWidth={1.6} />
-  </motion.a>
+  </m.a>
 }
 
 /** Link sublinhado com seta. */

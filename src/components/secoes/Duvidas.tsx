@@ -1,5 +1,5 @@
 import { useId, useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { DUVIDAS } from '../../content/textos'
 import { MENSAGENS } from '../../config/site'
 import { waLink } from '../../lib/whatsapp'
@@ -18,11 +18,11 @@ function Pergunta({ pergunta, resposta, aberta, alternar, i }: { pergunta: strin
       </button>
     </h3>
     <AnimatePresence initial={false}>
-      {aberta && <motion.div id={id} role="region" aria-label={pergunta} className="duvida-painel"
+      {aberta && <m.div id={id} role="region" aria-label={pergunta} className="duvida-painel"
         initial={reduced ? { opacity: 0 } : { height: 0, opacity: 0 }} animate={reduced ? { opacity: 1 } : { height: 'auto', opacity: 1 }}
         exit={reduced ? { opacity: 0 } : { height: 0, opacity: 0 }} transition={{ duration: .55, ease: EASE }}>
         <p>{resposta}</p>
-      </motion.div>}
+      </m.div>}
     </AnimatePresence>
   </Revelar>
 }

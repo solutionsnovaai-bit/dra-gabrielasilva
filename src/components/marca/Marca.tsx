@@ -19,9 +19,4 @@ export const Assinatura = (p: Props) => <Vetor dados={TAGLINE} {...p} />
 export const PROPORCAO_MONOGRAMA = MONOGRAMA.w / MONOGRAMA.h
 
 /** Imagem do GS em folha de ouro (a mesma da abertura). */
-export const FOLHA = {
-  src: '/marca/monograma-folha-1200.webp',
-  srcSet: '/marca/monograma-folha-800.webp 694w, /marca/monograma-folha-1200.webp 1040w',
-  largura: 1040,
-  altura: 1200,
-} as const
+export { FOLHA } from '../../config/imagens'

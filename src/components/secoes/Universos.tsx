@@ -26,7 +26,8 @@ export default function Universos() {
         </Revelar>
         <Revelar className="universo-celula" delay={.12}>
           <a href="#nutricao" className="universo universo-nutricao tema-escuro">
-            <img className="universo-gs" src={FOLHA.src} srcSet={FOLHA.srcSet} sizes="(min-width: 1024px) 26vw, 50vw" width={FOLHA.largura} height={FOLHA.altura} alt="" loading="lazy" decoding="async" />
+            <picture><source type="image/avif" srcSet={FOLHA.avif} sizes="(min-width: 1024px) 26vw, 50vw" />
+              <img className="universo-gs" src={FOLHA.src} srcSet={FOLHA.webp} sizes="(min-width: 1024px) 26vw, 50vw" width={FOLHA.largura} height={FOLHA.altura} alt="" loading="lazy" decoding="async" /></picture>
             <span className="num universo-num" aria-hidden="true">{n.numero}</span>
             <div className="universo-corpo">
               <h3 className="universo-titulo">{n.titulo}</h3>

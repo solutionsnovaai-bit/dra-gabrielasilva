@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'motion/react'
+import { m, useScroll, useTransform } from 'motion/react'
 import { NUTRICAO } from '../../content/textos'
 import { MENSAGENS } from '../../config/site'
 import { waLink } from '../../lib/whatsapp'
@@ -7,6 +7,7 @@ import { useMotionPreferences } from '../../hooks/useMotionPreferences'
 import { FOLHA } from '../marca/Marca'
 import { Botao } from '../ui/Botao'
 import Revelar, { Titulo } from '../ui/Revelar'
+import PainelFundo from '../ui/PainelFundo'
 
 /** Nutrição: capítulo escuro, com o GS em folha de ouro girando devagar com a rolagem. */
 export default function Nutricao() {
@@ -17,7 +18,8 @@ export default function Nutricao() {
   const rotate = useTransform(scrollYProgress, [0, 1], [-8, 6])
   const scale = useTransform(scrollYProgress, [0, .5, 1], [.92, 1, 1.04])
 
-  return <section ref={ref} id="nutricao" className="nutricao secao tema-escuro" aria-labelledby="nutricao-titulo">
+  return <section ref={ref} id="nutricao" className="nutricao secao tema-escuro secao-painel" aria-labelledby="nutricao-titulo">
+    <PainelFundo alvo={ref} className="painel-cafe" />
     <div className="conteiner nutricao-grade">
       <div className="nutricao-cabeca">
         <Revelar><p className="rotulo">{NUTRICAO.rotulo}</p></Revelar>
@@ -25,8 +27,11 @@ export default function Nutricao() {
       </div>
 
       <div className="nutricao-arte" aria-hidden="true">
-        <motion.img src={FOLHA.src} srcSet={FOLHA.srcSet} sizes="(min-width: 1024px) 34vw, 72vw" width={FOLHA.largura} height={FOLHA.altura} alt="" loading="lazy" decoding="async"
-          style={reduced ? undefined : { y, rotate, scale }} />
+        <picture>
+          <source type="image/avif" srcSet={FOLHA.avif} sizes="(min-width: 1024px) 34vw, 72vw" />
+          <m.img src={FOLHA.src} srcSet={FOLHA.webp} sizes="(min-width: 1024px) 34vw, 72vw" width={FOLHA.largura} height={FOLHA.altura} alt="" loading="lazy" decoding="async"
+            style={reduced ? undefined : { y, rotate, scale }} />
+        </picture>
       </div>
 
       <div className="nutricao-corpo">

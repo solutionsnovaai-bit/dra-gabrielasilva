@@ -1,12 +1,12 @@
 import { useRef } from 'react'
 import type { MotionValue } from 'motion/react'
-import { motion, useScroll, useTransform } from 'motion/react'
+import { m, useScroll, useTransform } from 'motion/react'
 import { MANIFESTO } from '../../content/textos'
 import { useMotionPreferences } from '../../hooks/useMotionPreferences'
 
 function Palavra({ texto, ouro, progresso, de, ate }: { texto: string; ouro: boolean; progresso: MotionValue<number>; de: number; ate: number }) {
   const opacity = useTransform(progresso, [de, ate], [0.14, 1])
-  return <motion.span className={ouro ? 'ouro' : undefined} style={{ opacity }}>{texto} </motion.span>
+  return <m.span className={ouro ? 'ouro' : undefined} style={{ opacity }}>{texto} </m.span>
 }
 
 /** Manifesto: as palavras acendem uma a uma conforme a rolagem. */

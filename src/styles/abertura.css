@@ -33,7 +33,7 @@ html[data-abertura="rapida"] .ab-noite { opacity: 0; }
 .ab-voo-x, .ab-voo-y { position: fixed; left: 0; top: 0; will-change: transform; }
 .ab-voo-y { transform-origin: 0 0; }
 .ab-mono { position: relative; }
-.ab-mono > * { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ab-mono > *, .ab-mono > picture > img { position: absolute; inset: 0; width: 100%; height: 100%; }
 .ab-contorno { overflow: visible; }
 .ab-contorno path { fill: none; stroke: var(--color-ouro-claro); stroke-linejoin: round; stroke-linecap: round; }
 .ab-folha { opacity: 0; clip-path: inset(100% 0 0 0); object-fit: contain; }

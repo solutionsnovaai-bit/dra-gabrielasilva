@@ -11,7 +11,7 @@ import Faixa from './components/secoes/Faixa'
 import Manifesto from './components/secoes/Manifesto'
 import Universos from './components/secoes/Universos'
 import Cuidados from './components/secoes/Cuidados'
-import Galeria from './components/secoes/Galeria'
+import Resultados from './components/secoes/Resultados'
 import Nutricao from './components/secoes/Nutricao'
 import Doutora from './components/secoes/Doutora'
 import Passos from './components/secoes/Passos'
@@ -48,7 +48,7 @@ function Site() {
       <Manifesto />
       <Universos />
       <Cuidados />
-      <Galeria />
+      <Resultados />
       <Nutricao />
       <Doutora />
       <Passos />

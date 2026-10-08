@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { AGENDAR } from '../../content/textos'
 import { ENDERECO_LINHA, MENSAGENS, SITE } from '../../config/site'
@@ -6,10 +7,13 @@ import { linkMapa } from '../../lib/mapa'
 import { Monograma } from '../marca/Marca'
 import { Botao } from '../ui/Botao'
 import Revelar, { Titulo } from '../ui/Revelar'
+import PainelFundo from '../ui/PainelFundo'
 
 /** Chamada final, em dourado chapado, com o GS gigante em tom sobre tom. */
 export default function Agendar() {
-  return <section id="agendar" className="agendar secao" aria-labelledby="agendar-titulo">
+  const ref = useRef<HTMLElement>(null)
+  return <section ref={ref} id="agendar" className="agendar secao secao-painel" aria-labelledby="agendar-titulo">
+    <PainelFundo alvo={ref} className="painel-ouro" />
     <Monograma className="agendar-gs" />
     <div className="conteiner agendar-grade">
       <div className="agendar-texto">

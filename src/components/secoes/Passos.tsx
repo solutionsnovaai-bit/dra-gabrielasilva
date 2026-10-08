@@ -1,4 +1,4 @@
-import { motion } from 'motion/react'
+import { m } from 'motion/react'
 import { PASSOS } from '../../content/textos'
 import { useMotionPreferences } from '../../hooks/useMotionPreferences'
 import Revelar, { CORTINA, Titulo } from '../ui/Revelar'
@@ -13,7 +13,7 @@ export default function Passos() {
         <Titulo id="passos-titulo" className="titulo" linhas={PASSOS.titulo} destaque={[1]} />
       </div>
       <div className="passos-lista-wrap">
-        <motion.span className="passos-fio" aria-hidden="true"
+        <m.span className="passos-fio" aria-hidden="true"
           initial={reduced ? false : { scaleX: 0, scaleY: 0 }} whileInView={{ scaleX: 1, scaleY: 1 }}
           viewport={{ once: true, amount: .4 }} transition={{ duration: 1.8, ease: CORTINA }} />
         <ol className="passos-lista">

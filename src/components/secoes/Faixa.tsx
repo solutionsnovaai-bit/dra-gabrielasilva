@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { motion, useAnimationFrame, useMotionValue, useScroll, useSpring, useTransform, useVelocity } from 'motion/react'
+import { m, useAnimationFrame, useMotionValue, useScroll, useSpring, useTransform, useVelocity } from 'motion/react'
 import { FAIXA } from '../../content/cuidados'
 import { useMotionPreferences } from '../../hooks/useMotionPreferences'
 import { useSceneActivity } from '../../hooks/useSceneActivity'
@@ -22,10 +22,12 @@ export default function Faixa() {
   const fator = useTransform(suave, [0, 1000], [0, 4], { clamp: false })
   const x = useTransform(base, v => `${envolve(-50, 0, v)}%`)
   const sentido = useRef(-1)
+  const ritmoAlvo = useMotionValue(1)
+  const ritmo = useSpring(ritmoAlvo, { stiffness: 60, damping: 18 })
 
   useAnimationFrame((_, delta) => {
     if (!ativa || reduced) return
-    let passo = sentido.current * 1.1 * (Math.min(delta, 50) / 1000)
+    let passo = sentido.current * 1.1 * ritmo.get() * (Math.min(delta, 50) / 1000)
     const f = fator.get()
     if (f < -0.02) sentido.current = 1
     else if (f > 0.02) sentido.current = -1
@@ -40,8 +42,9 @@ export default function Faixa() {
     </span>)}
   </span>
 
-  return <section ref={ref} className="faixa tema-escuro" aria-label="Alguns dos cuidados">
+  return <section ref={ref} className="faixa tema-escuro" aria-label="Alguns dos cuidados"
+    onPointerEnter={e => { if (e.pointerType === 'mouse') ritmoAlvo.set(.22) }} onPointerLeave={() => ritmoAlvo.set(1)}>
     <p className="sr-only">{FAIXA.join(', ')}.</p>
-    <motion.div className="faixa-trilho" style={{ x }} aria-hidden="true">{metade}{metade}</motion.div>
+    <m.div className="faixa-trilho" style={{ x }} aria-hidden="true">{metade}{metade}</m.div>
   </section>
 }

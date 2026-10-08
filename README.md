@@ -2,8 +2,12 @@
 
 Site de uma página do centro estético da Dra. Gabriela Silva (Jardim Indaia, São Paulo).
 
-React 19, TypeScript, Vite 6, Tailwind 4, Motion e Lenis. Fonte Mona Sans (variável, licença OFL) servida
-pelo próprio site. Imagens em WebP. Sem dependência de serviço externo.
+React 19, TypeScript 5.9, Vite 6.4, Tailwind 4.3, Motion 12 e Lenis 1.3 (versões fixas no package.json).
+Fonte Mona Sans (variável, licença OFL) servida pelo próprio site. Imagens em AVIF com reserva em WebP.
+Sem dependência de serviço externo.
+
+Lighthouse (build local): computador 97 · 100 · 100 · 100; celular 89 · 100 · 100 · 100
+(desempenho · acessibilidade · boas práticas · SEO). No celular, o LCP é o GS da abertura, de propósito.
 
 ## Rodar
 
@@ -32,7 +36,7 @@ Ao atualizar pelo GitHub, apague do repositório os arquivos que saíram do proj
 | Tratamentos (capítulos, nomes, etiquetas, descrições) | `src/content/cuidados.ts` |
 | Textos de todas as seções | `src/content/textos.ts` |
 | Cores | `src/styles/tema.css` |
-| Fotos dos procedimentos (carrossel) | `src/assets/procedimentos/` (veja o LEIA-ME de lá) |
+| Antes e depois (carrossel) | `src/content/resultados.ts` + imagens em `public/resultados/` |
 | Fotos da Dra., monograma e texturas | `public/fotos`, `public/marca`, `public/texturas` |
 
 Todos os botões abrem o WhatsApp com uma mensagem pronta do contexto (avaliação, nutrição, dúvida ou o
@@ -43,14 +47,13 @@ tratamento que a pessoa abriu no catálogo).
 - **CEP**: não foi informado. Preencha `SITE.endereco.cep` em `src/config/site.ts` (aparece no cartão de
   agendamento e nos dados para o Google).
 - **Instagram**: não foi informado. Preencha `SITE.instagram` e `SITE.instagramHandle`; vazio, o link não aparece.
-- **Fotos dos procedimentos**: coloque em `src/assets/procedimentos/`. A seção "Por dentro" aparece sozinha.
 - **Revisão dos textos dos tratamentos** pela Dra. Gabriela (nomes, etiquetas e descrições em
   `src/content/cuidados.ts`), principalmente o que ela oferece dentro da consulta de nutrição.
 
 ## O que tem no site
 
 Abertura (peça de motion) → topo com a foto → faixa de palavras → filosofia → dois cuidados →
-cuidados em 4 capítulos → carrossel de procedimentos (quando houver fotos) → nutrição → a Dra. →
+cuidados em 4 capítulos → antes e depois (carrossel automático) → nutrição → a Dra. →
 como funciona → dúvidas → agendamento → rodapé. Balão do WhatsApp sempre visível.
 
 **Abertura**, em quatro tempos: no escuro, um fio de ouro desenha o GS; o ouro preenche o monograma e um
@@ -58,6 +61,15 @@ brilho atravessa a folha; a luz se abre a partir do GS e revela o papel com somb
 nome; o GS voa em curva até o topo do site e pousa atrás da foto da Dra., que sobe em seguida.
 A barra dourada acompanha o carregamento real (fonte, monograma e foto). Na 1ª visita dura cerca de 4 s;
 ao voltar na mesma sessão, uma versão curta; com "reduzir movimento" ligado no aparelho, não há abertura.
+
+**Antes e depois**: carrossel que anda sozinho, devagar e sem fim. Para quando o mouse passa por cima, com o foco
+do teclado e no botão "Pausar"; dá para arrastar com o mouse e com o dedo (com inércia), sem atrapalhar a rolagem
+da página. Filtros por tratamento, com o protocolo de cada um ao lado (texto da própria Dra. Gabriela). Tocar numa foto abre a versão ampliada
+(setas, teclado e deslize; no celular, antes em cima e depois embaixo). Os links "Ver antes e depois" do catálogo
+já abrem o carrossel no tratamento certo. Com "reduzir movimento", vira uma fileira que a pessoa rola.
+
+Para incluir uma foto: monte o par (antes à esquerda, depois à direita, mesmo tamanho), salve em `public/resultados/`
+como `id-largura.avif` e `id-largura.webp` e acrescente o item no grupo certo em `src/content/resultados.ts`.
 
 **Balão do WhatsApp**: nunca some. A velocidade da rolagem puxa o balão por uma mola amortecida; ao parar,
 ele volta com um leve quique, inclinando e esticando conforme a velocidade. Sobre seções escuras, fica dourado.
@@ -84,7 +96,6 @@ src/
   hooks/                  Movimento reduzido, rolagem suave, cenas ativas, media query
   lib/                    WhatsApp e mapa
   styles/                 Tema, base, abertura, topo, seções, balão
-  assets/procedimentos/   Fotos do carrossel
 public/
   fotos/  marca/  texturas/  fonts/  og.jpg  ícones
 ```
@@ -93,5 +104,10 @@ public/
 
 - Só `transform`, `opacity` e `clip-path` animam; animações contínuas param fora da tela.
 - Rolagem com inércia (Lenis) só com mouse; no celular a rolagem é nativa.
+- O Lenis roda dentro do relógio do Motion (etapa "setup", antes da medição da rolagem), então parallax e
+  rolagem saem no mesmo quadro, sem a tremida de um quadro de atraso. O relógio só gira enquanto há rolagem.
+- Motion carregado em modo leve (`LazyMotion` + `m`), sem o código de layout e arraste que o site não usa.
+- Imagens principais em AVIF (metade do peso do WebP) com `<picture>`; a foto do topo e o GS são pré-carregados.
+- `robots.txt` e `sitemap.xml` gerados no build com o domínio certo; cabeçalhos de segurança e cache em `vercel.json`.
 - Respeita "reduzir movimento" do sistema e tem o botão "Pausar animações" no rodapé.
 - Catálogo e dúvidas navegáveis por teclado; menu do celular fecha com Esc.

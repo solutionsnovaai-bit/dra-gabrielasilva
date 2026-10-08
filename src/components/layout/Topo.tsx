@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { NAV } from '../../content/textos'
 import { ENDERECO_LINHA, MENSAGENS, SITE } from '../../config/site'
 import { waLink } from '../../lib/whatsapp'
@@ -60,7 +60,7 @@ export default function Topo({ visivel }: { visivel: boolean }) {
 
   return <>
     <header className={`topo ${solido ? 'is-solido' : ''} ${escondido && !aberto ? 'is-escondido' : ''} ${aberto ? 'menu-aberto' : ''}`}>
-      <motion.div className="conteiner topo-dentro"
+      <m.div className="conteiner topo-dentro"
         initial={reduced ? false : { y: -30, opacity: 0 }}
         animate={visivel || reduced ? { y: 0, opacity: 1 } : undefined}
         transition={{ duration: 1.1, delay: .2, ease: EASE }}>
@@ -77,28 +77,28 @@ export default function Topo({ visivel }: { visivel: boolean }) {
         <button ref={botaoMenu} className="topo-menu-botao" type="button" aria-expanded={aberto} aria-controls="menu" aria-label={aberto ? 'Fechar menu' : 'Abrir menu'} onClick={() => setAberto(v => !v)}>
           <span /><span />
         </button>
-      </motion.div>
+      </m.div>
     </header>
 
     <AnimatePresence>
-      {aberto && <motion.div id="menu" className="menu" role="dialog" aria-modal="true" aria-label="Menu"
+      {aberto && <m.div id="menu" className="menu" role="dialog" aria-modal="true" aria-label="Menu"
         initial={reduced ? { opacity: 0 } : { clipPath: 'inset(0% 0% 100% 0%)' }}
         animate={reduced ? { opacity: 1 } : { clipPath: 'inset(0% 0% 0% 0%)' }}
         exit={reduced ? { opacity: 0 } : { clipPath: 'inset(0% 0% 100% 0%)' }}
         transition={{ duration: .8, ease: CORTINA }}>
         <Monograma className="menu-gs" style={{ color: 'rgb(209 178 122 / .1)' }} />
         <nav className="menu-lista" aria-label="Seções">
-          {NAV.map((n, i) => <motion.a key={n.href} ref={i === 0 ? primeiroLink : undefined} href={n.href} className="menu-link" onClick={fechar}
+          {NAV.map((n, i) => <m.a key={n.href} ref={i === 0 ? primeiroLink : undefined} href={n.href} className="menu-link" onClick={fechar}
             initial={reduced ? false : { y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0, transition: { duration: .2 } }}
             transition={{ duration: .9, delay: .25 + i * .07, ease: EASE }}>
             <span className="num">0{i + 1}</span>{n.rotulo}
-          </motion.a>)}
+          </m.a>)}
         </nav>
-        <motion.div className="menu-rodape" initial={reduced ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: .8, delay: .55, ease: EASE }}>
+        <m.div className="menu-rodape" initial={reduced ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: .8, delay: .55, ease: EASE }}>
           <Botao href={waLink(MENSAGENS.avaliacao)} variante="ouro" rotuloAcessivel="Agendar avaliação pelo WhatsApp (abre em nova aba)">Agendar avaliação</Botao>
           <p className="menu-info">{ENDERECO_LINHA}<br />{SITE.atendimento} · {SITE.whatsappExibicao}</p>
-        </motion.div>
-      </motion.div>}
+        </m.div>
+      </m.div>}
     </AnimatePresence>
   </>
 }

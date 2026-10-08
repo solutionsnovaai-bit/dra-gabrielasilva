@@ -1,11 +1,12 @@
 import { useEffect, useId, useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { CAPITULOS } from '../../content/cuidados'
 import type { Tratamento } from '../../content/cuidados'
 import { CUIDADOS } from '../../content/textos'
 import { MENSAGENS } from '../../config/site'
 import { waLink } from '../../lib/whatsapp'
 import { useMotionPreferences } from '../../hooks/useMotionPreferences'
+import { ArrowDown } from 'lucide-react'
 import BrandIcon from '../ui/BrandIcon'
 import Revelar, { EASE, Titulo } from '../ui/Revelar'
 
@@ -21,19 +22,25 @@ function Item({ t, aberto, alternar }: { t: Tratamento; aberto: boolean; alterna
       </button>
     </h4>
     <AnimatePresence initial={false}>
-      {aberto && <motion.div id={id} className="trat-painel" role="region" aria-label={t.nome}
+      {aberto && <m.div id={id} className="trat-painel" role="region" aria-label={t.nome}
         initial={reduced ? { opacity: 0 } : { height: 0, opacity: 0 }}
         animate={reduced ? { opacity: 1 } : { height: 'auto', opacity: 1 }}
         exit={reduced ? { opacity: 0 } : { height: 0, opacity: 0 }}
         transition={{ duration: .6, ease: EASE }}>
         <div className="trat-painel-dentro">
           <p>{t.descricao}</p>
-          <a className="trat-cta" href={waLink(MENSAGENS.tratamento(t.mensagem ?? t.nome))} target="_blank" rel="noopener noreferrer">
-            <span className="trat-cta-icone"><BrandIcon brand="whatsapp" /></span>
-            {CUIDADOS.perguntar} {t.nome}
-          </a>
+          <div className="trat-acoes">
+            <a className="trat-cta" href={waLink(MENSAGENS.tratamento(t.mensagem ?? t.nome))} target="_blank" rel="noopener noreferrer">
+              <span className="trat-cta-icone"><BrandIcon brand="whatsapp" /></span>
+              {CUIDADOS.perguntar} {t.nome}
+            </a>
+            {t.resultados && <a className="link-linha trat-resultados" href="#resultados"
+              onClick={() => window.dispatchEvent(new CustomEvent('gs:resultados', { detail: t.resultados }))}>
+              {CUIDADOS.verResultados}<ArrowDown aria-hidden="true" strokeWidth={1.6} />
+            </a>}
+          </div>
         </div>
-      </motion.div>}
+      </m.div>}
     </AnimatePresence>
   </li>
 }

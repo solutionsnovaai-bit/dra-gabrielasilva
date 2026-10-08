@@ -1,6 +1,6 @@
 /* ---------- Balão do WhatsApp (sempre visível) ---------- */
 .fab {
-  position: fixed; z-index: 58;
+  position: fixed; z-index: 95;
   right: max(16px, calc(env(safe-area-inset-right) + 12px));
   bottom: calc(18px + env(safe-area-inset-bottom));
   display: flex; align-items: center; gap: 12px;

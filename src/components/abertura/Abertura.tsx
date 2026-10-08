@@ -175,7 +175,10 @@ export default function Abertura({ onSaida, onFim }: Props) {
           <svg ref={contorno} className="ab-contorno" viewBox={`0 0 ${MONOGRAMA.w} ${MONOGRAMA.h}`}>
             {MONOGRAMA.paths.map((d, i) => <path key={i} d={d} pathLength={1} strokeDasharray="1 1" strokeDashoffset={1} opacity={0} />)}
           </svg>
-          <img ref={folha} className="ab-folha" src={FOLHA.src} srcSet={FOLHA.srcSet} sizes={TAMANHOS_MONOGRAMA} width={FOLHA.largura} height={FOLHA.altura} alt="" decoding="async" />
+          <picture>
+            <source type="image/avif" srcSet={FOLHA.avif} sizes={TAMANHOS_MONOGRAMA} />
+            <img ref={folha} className="ab-folha" fetchPriority="high" src={FOLHA.src} srcSet={FOLHA.webp} sizes={TAMANHOS_MONOGRAMA} width={FOLHA.largura} height={FOLHA.altura} alt="" decoding="async" />
+          </picture>
           <span ref={brilho} className="ab-brilho"><span /></span>
         </div>
       </div>

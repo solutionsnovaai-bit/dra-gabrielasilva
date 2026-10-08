@@ -11,6 +11,8 @@ export type Tratamento = {
   descricao: string
   /** Como o nome aparece na mensagem do WhatsApp (se diferente do nome). */
   mensagem?: string
+  /** Se tiver fotos de antes e depois, o id do grupo em src/content/resultados.ts. */
+  resultados?: string
 }
 
 export type Capitulo = {
@@ -79,17 +81,20 @@ export const CAPITULOS: Capitulo[] = [
         mensagem: 'o protocolo de emagrecimento corporal',
       },
       {
-        nome: 'Tratamento enzimático',
-        tag: 'Gordura localizada',
-        descricao: 'Enzimas aplicadas na região que incomoda para tratar a gordura localizada de forma direcionada.',
-        mensagem: 'o tratamento enzimático para gordura localizada',
-      },
-      {
-        nome: 'Hidrolipoclasia não aspirativa',
+        nome: 'Emptiers – Lipo enzimática',
         tag: 'Gordura localizada',
         descricao:
-          'Protocolo para gordura localizada que combina a aplicação de uma solução com ultrassom. Sem cirurgia e sem aspiração.',
-        mensagem: 'a hidrolipoclasia não aspirativa',
+          'Emptiers para redução de gordura localizada por substâncias injetáveis, também chamado comercialmente de “lipo enzimática”.',
+        mensagem: 'a lipo enzimática (Emptiers)',
+        resultados: 'lipo-enzimatica',
+      },
+      {
+        nome: 'Hidrolipoclasia não aspirativa com Liftera',
+        tag: 'Gordura localizada',
+        descricao:
+          'Protocolo para gordura localizada que combina a aplicação de uma solução com a tecnologia Liftera. Sem cirurgia e sem aspiração.',
+        mensagem: 'a hidrolipoclasia não aspirativa com Liftera',
+        resultados: 'hidrolipoclasia',
       },
       {
         nome: 'Muscle Boost',
@@ -175,6 +180,7 @@ export const FAIXA = [
   'Jato de plasma',
   'Mesoterapia capilar',
   'Muscle Boost',
+  'Lipo enzimática',
   'Hidrolipoclasia',
   'Pump Up',
   'Nutrição',

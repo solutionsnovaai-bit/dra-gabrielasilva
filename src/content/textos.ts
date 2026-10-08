@@ -2,6 +2,7 @@
 
 export const NAV = [
   { href: '#cuidados', rotulo: 'Cuidados' },
+  { href: '#resultados', rotulo: 'Resultados' },
   { href: '#nutricao', rotulo: 'Nutrição' },
   { href: '#doutora', rotulo: 'A Dra.' },
   { href: '#duvidas', rotulo: 'Dúvidas' },
@@ -52,11 +53,7 @@ export const CUIDADOS = {
   texto:
     'Aqui você não escolhe um procedimento no escuro. A Dra. Gabriela avalia, explica e indica o que faz sentido para você. Toque em um tratamento para saber mais.',
   perguntar: 'Perguntar sobre',
-} as const
-
-export const GALERIA = {
-  rotulo: 'Por dentro',
-  titulo: ['Cada detalhe,', 'com cuidado.'],
+  verResultados: 'Ver antes e depois',
 } as const
 
 export const NUTRICAO = {
