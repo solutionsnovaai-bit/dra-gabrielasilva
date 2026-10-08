@@ -1,6 +1,12 @@
-import { useRef } from 'react'
-import { m, useScroll, useTransform } from 'motion/react'
+import { useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
+import { createPortal } from 'react-dom'
+import { AnimatePresence, m, useScroll, useTransform } from 'motion/react'
+import { Maximize2 } from 'lucide-react'
 import { NUTRICAO } from '../../content/textos'
+import { RESULTADOS_NUTRICAO } from '../../content/resultados'
+import { Ampliada, Fotos } from '../ui/AntesDepois'
+import type { ItemResultado } from '../ui/AntesDepois'
 import { MENSAGENS } from '../../config/site'
 import { waLink } from '../../lib/whatsapp'
 import { useMotionPreferences } from '../../hooks/useMotionPreferences'
@@ -8,6 +14,36 @@ import { FOLHA } from '../marca/Marca'
 import { Botao } from '../ui/Botao'
 import Revelar, { Titulo } from '../ui/Revelar'
 import PainelFundo from '../ui/PainelFundo'
+
+const ITENS: ItemResultado[] = RESULTADOS_NUTRICAO.grupos.flatMap(g => g.fotos.map(f => ({ ...f, grupo: g })))
+const SOMA = ITENS.reduce((n, f) => n + f.w / f.h, 0)
+
+/** Antes e depois das dietas: dois cartões com a mesma altura (a largura acompanha a proporção de cada foto). */
+function AntesDepoisNutricao() {
+  const [aberto, setAberto] = useState<number | null>(null)
+  const origem = useRef<HTMLElement | null>(null)
+  const fechar = () => { setAberto(null); window.setTimeout(() => origem.current?.focus({ preventScroll: true }), 50) }
+  return <div className="nutricao-resultados">
+    <Revelar><p className="rotulo">{RESULTADOS_NUTRICAO.rotulo}</p></Revelar>
+    <ul className="nutricao-resultados-lista">
+      {ITENS.map((f, i) => <li key={f.id} className="nr-item" style={{ '--ar': f.w / f.h } as CSSProperties}>
+        <Revelar delay={i * .1}>
+          <button type="button" className="res-card nr-card" aria-label={`Ampliar: ${f.grupo.tratamento}, ${f.area.toLowerCase()}`}
+            onClick={e => { origem.current = e.currentTarget; setAberto(i) }}>
+            <span className="res-foto">
+              <Fotos f={f} sizes={`(max-width: 767px) 92vw, ${Math.round(88 * (f.w / f.h) / SOMA)}vw`} />
+              <span className="res-ampliar" aria-hidden="true"><Maximize2 strokeWidth={1.6} /></span>
+            </span>
+            <span className="res-legenda"><span className="res-trat">{f.grupo.tratamento}</span><span className="res-area">{f.area}</span></span>
+          </button>
+        </Revelar>
+      </li>)}
+    </ul>
+    {createPortal(<AnimatePresence>
+      {aberto !== null && <Ampliada itens={ITENS} indice={aberto} onIr={setAberto} onFechar={fechar} />}
+    </AnimatePresence>, document.body)}
+  </div>
+}
 
 /** Nutrição: capítulo escuro, com o GS em folha de ouro girando devagar com a rolagem. */
 export default function Nutricao() {
@@ -49,6 +85,7 @@ export default function Nutricao() {
           <Botao href={waLink(MENSAGENS.nutricao)} variante="ouro" rotuloAcessivel={`${NUTRICAO.cta} pelo WhatsApp (abre em nova aba)`}>{NUTRICAO.cta}</Botao>
         </Revelar>
       </div>
+      <AntesDepoisNutricao />
     </div>
   </section>
 }

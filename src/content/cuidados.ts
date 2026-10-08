@@ -43,6 +43,7 @@ export const CAPITULOS: Capitulo[] = [
         descricao:
           'Estimula a produção do seu próprio colágeno. O resultado vem aos poucos: pele mais firme, com mais sustentação e qualidade.',
         mensagem: 'o bioestimulador de colágeno',
+        resultados: 'gluteos',
       },
       {
         nome: 'Botox',
@@ -50,6 +51,7 @@ export const CAPITULOS: Capitulo[] = [
         descricao:
           'Suaviza as linhas de expressão respeitando os seus traços, para um rosto descansado sem perder o seu jeito de sorrir.',
         mensagem: 'o botox',
+        resultados: 'botox',
       },
       {
         nome: 'Hydra Gloss',
@@ -64,6 +66,7 @@ export const CAPITULOS: Capitulo[] = [
         descricao:
           'Tecnologia não cirúrgica que trabalha a textura e a firmeza da pele, inclusive em regiões delicadas.',
         mensagem: 'o jato de plasma',
+        resultados: 'jato-de-plasma',
       },
     ],
   },
@@ -107,6 +110,7 @@ export const CAPITULOS: Capitulo[] = [
         tag: 'Volume e contorno',
         descricao: 'Protocolos para dar mais volume e contorno aos glúteos, definidos a partir da sua avaliação.',
         mensagem: 'os protocolos de volumização de glúteos',
+        resultados: 'gluteos',
       },
     ],
   },
@@ -122,6 +126,7 @@ export const CAPITULOS: Capitulo[] = [
         descricao:
           'Ativos aplicados direto no couro cabeludo para nutrir a raiz, fortalecer os fios e cuidar da queda.',
         mensagem: 'a mesoterapia capilar',
+        resultados: 'mesoterapia-capilar',
       },
     ],
   },
@@ -160,6 +165,7 @@ export const CAPITULOS: Capitulo[] = [
         tag: 'Tonificação',
         descricao: 'Estímulo elétrico que trabalha a musculatura e ajuda na tonificação e no contorno.',
         mensagem: 'a corrente russa',
+        resultados: 'gluteos',
       },
       {
         nome: 'Vacuoterapia',

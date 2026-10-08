@@ -36,7 +36,7 @@ Ao atualizar pelo GitHub, apague do repositório os arquivos que saíram do proj
 | Tratamentos (capítulos, nomes, etiquetas, descrições) | `src/content/cuidados.ts` |
 | Textos de todas as seções | `src/content/textos.ts` |
 | Cores | `src/styles/tema.css` |
-| Antes e depois (carrossel) | `src/content/resultados.ts` + imagens em `public/resultados/` |
+| Antes e depois (carrossel e Nutrição) | `src/content/resultados.ts` + imagens em `public/resultados/` |
 | Fotos da Dra., monograma e texturas | `public/fotos`, `public/marca`, `public/texturas` |
 
 Todos os botões abrem o WhatsApp com uma mensagem pronta do contexto (avaliação, nutrição, dúvida ou o
@@ -64,12 +64,19 @@ ao voltar na mesma sessão, uma versão curta; com "reduzir movimento" ligado no
 
 **Antes e depois**: carrossel que anda sozinho, devagar e sem fim. Para quando o mouse passa por cima, com o foco
 do teclado e no botão "Pausar"; dá para arrastar com o mouse e com o dedo (com inércia), sem atrapalhar a rolagem
-da página. Filtros por tratamento, com o protocolo de cada um ao lado (texto da própria Dra. Gabriela). Tocar numa foto abre a versão ampliada
-(setas, teclado e deslize; no celular, antes em cima e depois embaixo). Os links "Ver antes e depois" do catálogo
-já abrem o carrossel no tratamento certo. Com "reduzir movimento", vira uma fileira que a pessoa rola.
+da página. Filtros por tratamento; ao lado do título, uma ficha mostra o tratamento escolhido, quantas fotos tem e o
+protocolo (texto da própria Dra. Gabriela). Tocar numa foto abre a versão ampliada (setas, teclado e deslize; no
+celular, antes em cima e depois embaixo). Os links "Ver antes e depois" do catálogo já abrem o carrossel no
+tratamento certo. Com "reduzir movimento", vira uma fileira que a pessoa rola. Cada foto só é baixada quando está
+chegando perto da tela, então o carrossel pode crescer sem pesar a página.
 
-Para incluir uma foto: monte o par (antes à esquerda, depois à direita, mesmo tamanho), salve em `public/resultados/`
-como `id-largura.avif` e `id-largura.webp` e acrescente o item no grupo certo em `src/content/resultados.ts`.
+Os antes e depois das dietas ficam na seção Nutrição (`RESULTADOS_NUTRICAO`, no mesmo arquivo), com a mesma foto ampliada.
+
+Para incluir uma foto: monte o par com as duas metades do mesmo tamanho (antes à esquerda e depois à direita; ou
+antes em cima e depois embaixo, marcando `layout: 'v'`), salve em `public/resultados/` como `id-largura.avif` e
+`id-largura.webp` (duas larguras, até 820 px de altura) e acrescente o item no grupo certo em
+`src/content/resultados.ts`. Para ligar um tratamento do catálogo às fotos, use `resultados: 'id-do-grupo'` em
+`src/content/cuidados.ts`.
 
 **Balão do WhatsApp**: nunca some. A velocidade da rolagem puxa o balão por uma mola amortecida; ao parar,
 ele volta com um leve quique, inclinando e esticando conforme a velocidade. Sobre seções escuras, fica dourado.

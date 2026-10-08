@@ -1,120 +1,49 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import type { CSSProperties, FocusEvent, MouseEvent, PointerEvent as RPointerEvent } from 'react'
+import type { CSSProperties, FocusEvent, MouseEvent, PointerEvent as RPointerEvent, RefObject } from 'react'
 import { AnimatePresence, m, useAnimationFrame, useMotionValue } from 'motion/react'
-import { ArrowLeft, ArrowRight, Maximize2, Pause, Play, X } from 'lucide-react'
-import { RESULTADOS, fotosIntercaladas, srcset } from '../../content/resultados'
-import type { FotoResultado, GrupoResultado } from '../../content/resultados'
+import { ArrowLeft, ArrowRight, Maximize2, Pause, Play } from 'lucide-react'
+import { RESULTADOS, fotosIntercaladas } from '../../content/resultados'
 import { waLink } from '../../lib/whatsapp'
 import { useMotionPreferences } from '../../hooks/useMotionPreferences'
 import { useSceneActivity } from '../../hooks/useSceneActivity'
 import { useMedia } from '../../hooks/useMedia'
-import { rolagem } from '../../hooks/useSmoothScroll'
 import { Botao } from '../ui/Botao'
+import { Ampliada, Fotos } from '../ui/AntesDepois'
+import type { ItemResultado } from '../ui/AntesDepois'
 import Revelar, { EASE, Titulo } from '../ui/Revelar'
 
-type Item = FotoResultado & { grupo: GrupoResultado }
+type Item = ItemResultado
 
 /** Mantém o deslocamento entre -largura e 0 (o trilho tem cópias lado a lado, então dá a volta sem emenda). */
 const envolve = (v: number, w: number) => (w > 0 ? (((v % w) - w) % w) : v)
-const textoAlt = (f: Item) => `Antes e depois de ${f.grupo.tratamento}: ${f.area.toLowerCase()}.`
 
-function Fotos({ f, sizes, carregar = 'lazy' }: { f: Item; sizes: string; carregar?: 'lazy' | 'eager' }) {
-  return <>
-    <picture>
-      <source type="image/avif" srcSet={srcset(f, 'avif')} sizes={sizes} />
-      <img src={`/resultados/${f.id}-${f.larguras[f.larguras.length - 1]}.webp`} srcSet={srcset(f, 'webp')} sizes={sizes}
-        width={f.w} height={f.h} alt={textoAlt(f)} loading={carregar} decoding="async" draggable={false} />
-    </picture>
-    <span className="res-tag res-antes" aria-hidden="true">Antes</span>
-    <span className="res-tag res-depois" aria-hidden="true">Depois</span>
-  </>
-}
-
-function Cartao({ f, duplicado, carregar, onAbrir }: { f: Item; duplicado: boolean; carregar: 'lazy' | 'eager'; onAbrir: (el: HTMLElement) => void }) {
+/**
+ * Cartão do carrossel. A foto só é pedida quando a seção está perto (perto) e o cartão está a até ~1 palco
+ * de distância na horizontal (as fotos de longe esperam a vez, para a página não baixar tudo de uma vez).
+ */
+function Cartao({ f, duplicado, perto, raiz, onAbrir }: { f: Item; duplicado: boolean; perto: boolean; raiz: RefObject<HTMLDivElement | null>; onAbrir: (el: HTMLElement) => void }) {
+  const ref = useRef<HTMLButtonElement>(null)
+  const [dentro, setDentro] = useState(false)
+  useEffect(() => {
+    const el = ref.current, root = raiz.current
+    if (!el || !root || dentro || !perto) return
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setDentro(true); io.disconnect() } }, { root, rootMargin: '0px 110% 0px 110%' })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [raiz, dentro, perto])
   const r = f.w / f.h
-  const sizes = `(max-width: 767px) 84vw, (max-width: 1023px) ${Math.round(300 * r)}px, ${Math.round(390 * r)}px`
-  return <button type="button" className="res-card" style={{ '--ar': r } as CSSProperties}
+  const v = f.layout === 'v'
+  const sizes = `(max-width: 767px) min(84vw, ${Math.round(250 * r)}px), (max-width: 1023px) ${Math.round(300 * r)}px, ${Math.round(390 * r)}px`
+  return <button ref={ref} type="button" className="res-card" style={{ '--ar': r } as CSSProperties}
     tabIndex={duplicado ? -1 : 0} aria-hidden={duplicado || undefined}
     aria-label={`Ampliar: ${f.grupo.tratamento}, ${f.area.toLowerCase()}`}
     onClick={e => onAbrir(e.currentTarget)}>
-    <span className="res-foto">
-      <Fotos f={f} sizes={sizes} carregar={carregar} />
+    <span className={`res-foto ${v ? 'is-v' : ''}`}>
+      <Fotos f={f} sizes={sizes} carregar={perto && dentro ? 'eager' : 'lazy'} />
       <span className="res-ampliar" aria-hidden="true"><Maximize2 strokeWidth={1.6} /></span>
     </span>
     <span className="res-legenda"><span className="res-trat">{f.grupo.curto}</span><span className="res-area">{f.area}</span></span>
   </button>
-}
-
-/** Foto ampliada: navegação por setas, teclado e deslize; Esc fecha. */
-function Ampliada({ itens, indice, onIr, onFechar }: { itens: Item[]; indice: number; onIr: (i: number) => void; onFechar: () => void }) {
-  const { reduced } = useMotionPreferences()
-  const fechar = useRef<HTMLButtonElement>(null)
-  const toque = useRef<{ x: number; id: number } | null>(null)
-  const f = itens[indice]
-  const total = itens.length
-  const ir = (d: number) => onIr((indice + d + total) % total)
-
-  useEffect(() => {
-    document.documentElement.classList.add('travado')
-    rolagem.lenis?.stop()
-    fechar.current?.focus()
-    return () => { document.documentElement.classList.remove('travado'); rolagem.lenis?.start() }
-  }, [])
-  useEffect(() => {
-    const tecla = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onFechar()
-      else if (e.key === 'ArrowRight') ir(1)
-      else if (e.key === 'ArrowLeft') ir(-1)
-    }
-    window.addEventListener('keydown', tecla)
-    return () => window.removeEventListener('keydown', tecla)
-  })
-
-  const r = f.w / f.h
-  return <m.div className="amp" role="dialog" aria-modal="true" aria-label={`${f.grupo.tratamento}, foto ${indice + 1} de ${total}`} data-lenis-prevent
-    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .45, ease: EASE }}
-    onPointerDown={e => { toque.current = { x: e.clientX, id: e.pointerId } }}
-    onPointerUp={e => {
-      const t = toque.current; toque.current = null
-      if (!t || t.id !== e.pointerId) return
-      const dx = e.clientX - t.x
-      if (Math.abs(dx) > 60) ir(dx < 0 ? 1 : -1)
-    }}
-    onClick={e => { if (e.target === e.currentTarget) onFechar() }}>
-    <button ref={fechar} type="button" className="amp-fechar" onClick={onFechar} aria-label="Fechar"><X strokeWidth={1.5} /></button>
-    <AnimatePresence mode="wait" initial={false}>
-      <m.figure key={f.id} className="amp-figura" style={{ '--ar': r, '--arm': r / 2 } as CSSProperties}
-        initial={reduced ? { opacity: 0 } : { opacity: 0, y: 18, scale: .985 }} animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={reduced ? { opacity: 0 } : { opacity: 0, y: -10 }} transition={{ duration: .5, ease: EASE }}>
-        <div className="amp-foto res-foto">
-          <Fotos f={f} sizes={`min(92vw, ${Math.round(64 * r)}vh)`} carregar="eager" />
-        </div>
-        {/* No celular em pé, antes em cima e depois embaixo: cada metade na largura toda. */}
-        <div className="amp-pilha">
-          {(['antes', 'depois'] as const).map(lado => <div key={lado} className={`amp-meia amp-${lado}`}>
-            <picture>
-              <source type="image/avif" srcSet={srcset(f, 'avif')} sizes="184vw" />
-              <img src={`/resultados/${f.id}-${f.larguras[f.larguras.length - 1]}.webp`} srcSet={srcset(f, 'webp')} sizes="184vw"
-                width={f.w} height={f.h} alt="" decoding="async" draggable={false} />
-            </picture>
-            <span className={`res-tag res-${lado}`} aria-hidden="true">{lado === 'antes' ? 'Antes' : 'Depois'}</span>
-          </div>)}
-        </div>
-        <figcaption className="amp-legenda">
-          <div>
-            <p className="amp-trat">{f.grupo.tratamento}</p>
-            <p className="amp-area">{f.area}</p>
-          </div>
-          <ul className="amp-protocolo">{f.grupo.protocolo.map(p => <li key={p}>{p}</li>)}</ul>
-        </figcaption>
-      </m.figure>
-    </AnimatePresence>
-    <div className="amp-nav">
-      <button type="button" onClick={() => ir(-1)} aria-label="Foto anterior"><ArrowLeft strokeWidth={1.5} /></button>
-      <span className="num amp-contador" aria-live="polite">{String(indice + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span>
-      <button type="button" onClick={() => ir(1)} aria-label="Próxima foto"><ArrowRight strokeWidth={1.5} /></button>
-    </div>
-  </m.div>
 }
 
 /**
@@ -132,13 +61,13 @@ export default function Resultados() {
   const [pausado, setPausado] = useState(false)
   const [aberto, setAberto] = useState<number | null>(null)
   const [copias, setCopias] = useState(2)
-  /* As fotos ficam recortadas pelo palco (overflow), então o lazy do navegador só carregaria quando cada uma
-     já estivesse entrando na tela. Perto da seção, carrega todas de uma vez (são leves). */
-  const [carregar, setCarregar] = useState<'lazy' | 'eager'>('lazy')
+  /* As fotos ficam recortadas pelo palco (overflow), então o lazy do navegador só carregaria cada uma quando
+     ela já estivesse entrando na tela. Perto da seção, cada cartão pede a sua foto um pouco antes de chegar. */
+  const [perto, setPerto] = useState(false)
   useEffect(() => {
     const el = palco.current
     if (!el) return
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setCarregar('eager'); io.disconnect() } }, { rootMargin: '1200px 0px' })
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setPerto(true); io.disconnect() } }, { rootMargin: '1200px 0px' })
     io.observe(el)
     return () => io.disconnect()
   }, [])
@@ -243,12 +172,21 @@ export default function Resultados() {
         <Titulo id="resultados-titulo" className="titulo" linhas={RESULTADOS.titulo} destaque={[1]} />
         <Revelar delay={.08}><p className="lead">{RESULTADOS.texto}</p></Revelar>
       </div>
-      <div className="resultados-protocolos">
-        {RESULTADOS.grupos.map((g, i) => <Revelar key={g.id} delay={.1 + i * .08} className={`protocolo ${filtro === g.id ? 'is-ativo' : ''}`}>
-          <h3 className="protocolo-nome">{g.tratamento}</h3>
-          <ul className="protocolo-dados">{g.protocolo.map((p, j) => <li key={p}><span className="num">0{j + 1}</span>{p}</li>)}</ul>
-        </Revelar>)}
-      </div>
+      <Revelar delay={.12} className="resultados-ficha">
+        <div aria-live="polite" aria-atomic="true">
+        <AnimatePresence mode="wait" initial={false}>
+          <m.div key={filtro} className="ficha"
+            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -10 }} transition={{ duration: .45, ease: EASE }}>
+            <p className="ficha-contagem"><span className="num">{String(itens.length).padStart(2, '0')}</span>{itens.length === 1 ? 'resultado' : 'resultados'}</p>
+            <h3 className="ficha-nome">{grupoAtual ? grupoAtual.tratamento : RESULTADOS.todosTitulo}</h3>
+            {grupoAtual
+              ? grupoAtual.protocolo.length > 0 && <ul className="protocolo-dados">{grupoAtual.protocolo.map((p, j) => <li key={p}><span className="num">0{j + 1}</span>{p}</li>)}</ul>
+              : <p className="ficha-dica">{RESULTADOS.dica}</p>}
+          </m.div>
+        </AnimatePresence>
+        </div>
+      </Revelar>
     </div>
 
     <div className="conteiner resultados-barra">
@@ -274,7 +212,7 @@ export default function Resultados() {
       onClickCapture={cliqueCaptura} onFocus={focou} onBlur={() => { s.current.foco = false }}>
       <m.div className="resultados-trilho" style={reduced ? undefined : { x }}>
         {Array.from({ length: copias }, (_, c) => <div key={`${filtro}-${c}`} ref={c === 0 ? primeiroSet : undefined} className="resultados-set">
-          {itens.map((f, i) => <Cartao key={f.id} f={f} duplicado={c > 0} carregar={carregar} onAbrir={el => abrir(el, i)} />)}
+          {itens.map((f, i) => <Cartao key={f.id} f={f} duplicado={c > 0} perto={perto} raiz={palco} onAbrir={el => abrir(el, i)} />)}
         </div>)}
       </m.div>
     </div>
