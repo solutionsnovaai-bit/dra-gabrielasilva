@@ -35,7 +35,7 @@ export const ENDERECO_COMPLETO = `${SITE.endereco.rua} – ${SITE.endereco.bairr
 export const SEO = {
   titulo: 'Dra. Gabriela Silva · Estética facial e corporal e Nutrição · Jardim Indaia, SP',
   descricao:
-    'Centro estético da Dra. Gabriela Silva no Jardim Indaia, São Paulo. Skinbooster, bioestimulador de colágeno, botox, protocolos corporais, tratamentos sem agulhas e consulta de nutrição. Atendimento com hora marcada.',
+    'Centro estético da Dra. Gabriela Silva no Jardim Indaia, São Paulo. Skinbooster, bioestimulador de colágeno, botox, protocolos corporais, aparelhos e consulta de nutrição com nutricionista parceira. Atendimento com hora marcada.',
   compartilharTitulo: 'Dra. Gabriela Silva · Estética e Nutrição',
   compartilharTexto: 'Beleza que se vê. Bem-estar que se sente. Agende sua avaliação pelo WhatsApp.',
   imagemAlt: 'Dra. Gabriela Silva, de jaleco branco, ao lado do monograma GS em dourado.',

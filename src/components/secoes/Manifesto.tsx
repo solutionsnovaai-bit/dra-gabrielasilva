@@ -3,13 +3,14 @@ import type { MotionValue } from 'motion/react'
 import { m, useScroll, useTransform } from 'motion/react'
 import { MANIFESTO } from '../../content/textos'
 import { useMotionPreferences } from '../../hooks/useMotionPreferences'
+import Revelar from '../ui/Revelar'
 
 function Palavra({ texto, ouro, progresso, de, ate }: { texto: string; ouro: boolean; progresso: MotionValue<number>; de: number; ate: number }) {
   const opacity = useTransform(progresso, [de, ate], [0.14, 1])
   return <m.span className={ouro ? 'ouro' : undefined} style={{ opacity }}>{texto} </m.span>
 }
 
-/** Manifesto: as palavras acendem uma a uma conforme a rolagem. */
+/** Manifesto: as palavras acendem uma a uma conforme a rolagem; embaixo, o complemento e a frase de fecho. */
 export default function Manifesto() {
   const { reduced } = useMotionPreferences()
   const ref = useRef<HTMLParagraphElement>(null)
@@ -17,6 +18,7 @@ export default function Manifesto() {
   const palavras = MANIFESTO.texto.split(' ').map(p => ({ ouro: p.includes('*'), texto: p.replace(/\*/g, '') }))
   const limpo = palavras.map(p => p.texto).join(' ')
   const n = palavras.length
+  const ultima = MANIFESTO.fecho.length - 1
 
   return <section className="manifesto secao papel" id="filosofia" aria-labelledby="manifesto-rotulo">
     <div className="conteiner manifesto-grade">
@@ -29,6 +31,14 @@ export default function Manifesto() {
             : <Palavra key={i} texto={p.texto} ouro={p.ouro} progresso={scrollYProgress} de={i / n} ate={(i + 1.5) / n} />)}
         </span>
       </p>
+      <div className="manifesto-extra">
+        <Revelar><p className="lead">{MANIFESTO.complemento}</p></Revelar>
+        <Revelar delay={.1}>
+          <p className="titulo-m manifesto-fecho">
+            {MANIFESTO.fecho.map((l, i) => <span key={l} className={i === ultima ? 'ouro' : undefined}>{l}</span>)}
+          </p>
+        </Revelar>
+      </div>
     </div>
   </section>
 }

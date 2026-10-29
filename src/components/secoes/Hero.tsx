@@ -93,7 +93,7 @@ export default function Hero({ fase }: { fase: Fase }) {
 
     <m.div className="hero-texto conteiner" style={reduced ? undefined : { y: yTexto, opacity: opTexto }}>
       <div className="hero-texto-caixa">
-        <m.p className="rotulo" {...surge(.1)}><span className="so-largo">{HERO.sobretitulo}</span><span className="so-estreito">{HERO.sobretituloCurto}</span></m.p>
+        <m.p className="rotulo hero-rotulo" {...surge(.1)}><span className="so-largo">{HERO.sobretitulo}</span><span className="so-estreito">{HERO.sobretituloCurto[0]}<br />{HERO.sobretituloCurto[1]}</span></m.p>
         <Titulo as="h1" id="hero-titulo" className="display hero-titulo" linhas={[...HERO.linhas, ...HERO.linhasDestaque]} destaque={[2, 3]} ativo={entrou} atraso={.2} />
         <m.p className="lead hero-lead" {...surge(.75)}>{HERO.texto}</m.p>
         <m.div className="hero-acoes" {...surge(.9)}>

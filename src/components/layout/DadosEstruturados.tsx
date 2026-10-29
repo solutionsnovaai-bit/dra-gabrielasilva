@@ -2,7 +2,7 @@ import { SEO, SITE } from '../../config/site'
 import { CAPITULOS } from '../../content/cuidados'
 import { temWhatsApp } from '../../lib/whatsapp'
 
-/** Dados para o Google entender o negócio (clínica de estética com nutricionista). */
+/** Dados para o Google entender o negócio (clínica de estética com nutrição em parceria). */
 export default function DadosEstruturados() {
   const e = SITE.endereco
   const dados: Record<string, unknown> = {

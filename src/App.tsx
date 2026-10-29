@@ -14,8 +14,8 @@ import Cuidados from './components/secoes/Cuidados'
 import Resultados from './components/secoes/Resultados'
 import Nutricao from './components/secoes/Nutricao'
 import Doutora from './components/secoes/Doutora'
+import Parceiras from './components/secoes/Parceiras'
 import Passos from './components/secoes/Passos'
-import Duvidas from './components/secoes/Duvidas'
 import Agendar from './components/secoes/Agendar'
 import DadosEstruturados from './components/layout/DadosEstruturados'
 
@@ -51,8 +51,8 @@ function Site() {
       <Resultados />
       <Nutricao />
       <Doutora />
+      <Parceiras />
       <Passos />
-      <Duvidas />
       <Agendar />
     </main>
     <Rodape />

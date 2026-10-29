@@ -87,6 +87,17 @@ export const RESULTADOS = {
       ],
     },
     {
+      id: 'protocolo-emagrecimento',
+      tratamento: 'Protocolo de emagrecimento',
+      curto: 'Emagrecimento',
+      protocolo: [],
+      mensagem: msg('do protocolo de emagrecimento'),
+      fotos: [
+        { id: 'emagrecimento-01', area: 'De perfil', w: 850, h: 780, larguras: [476, 850] },
+        { id: 'emagrecimento-02', area: 'De frente', w: 1092, h: 640, larguras: [612, 1092] },
+      ],
+    },
+    {
       id: 'gluteos',
       tratamento: 'Corrente russa, bioestimulador de colágeno e volumização de glúteos',
       curto: 'Glúteos',
@@ -104,29 +115,6 @@ export const RESULTADOS = {
       protocolo: ['5 sessões'],
       mensagem: msg('da mesoterapia capilar'),
       fotos: [{ id: 'capilar-01', area: 'Couro cabeludo, visto de cima', w: 1132, h: 820, larguras: [634, 1132] }],
-    },
-  ] satisfies GrupoResultado[],
-} as const
-
-/** Antes e depois da Nutrição (aparecem na seção Nutrição, não no carrossel). */
-export const RESULTADOS_NUTRICAO = {
-  rotulo: 'Antes e depois',
-  grupos: [
-    {
-      id: 'dieta-emagrecimento',
-      tratamento: 'Dieta emagrecimento',
-      curto: 'Dieta emagrecimento',
-      protocolo: [],
-      mensagem: 'Olá, Dra. Gabriela! Vim pelo site, vi o antes e depois da dieta de emagrecimento e quero agendar uma consulta de nutrição.',
-      fotos: [{ id: 'dieta-01', area: 'De perfil', w: 850, h: 780, larguras: [476, 850] }],
-    },
-    {
-      id: 'dieta-massa',
-      tratamento: 'Dieta emagrecimento e ganho de massa',
-      curto: 'Dieta emagrecimento e ganho de massa',
-      protocolo: [],
-      mensagem: 'Olá, Dra. Gabriela! Vim pelo site, vi o antes e depois da dieta de emagrecimento e ganho de massa e quero agendar uma consulta de nutrição.',
-      fotos: [{ id: 'dieta-02', area: 'De frente', w: 1092, h: 640, larguras: [612, 1092] }],
     },
   ] satisfies GrupoResultado[],
 } as const

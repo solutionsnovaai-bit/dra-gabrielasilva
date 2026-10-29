@@ -80,8 +80,9 @@ export const CAPITULOS: Capitulo[] = [
         nome: 'Protocolo de emagrecimento',
         tag: 'Redução de medidas',
         descricao:
-          'Um plano corporal montado para você, que combina tecnologias e acompanhamento, com o olhar de nutricionista em cada etapa.',
+          'Um plano corporal montado para você, que combina tecnologias e acompanhamento, com o olhar da nutricionista parceira em cada etapa.',
         mensagem: 'o protocolo de emagrecimento corporal',
+        resultados: 'protocolo-emagrecimento',
       },
       {
         nome: 'Emptiers – Lipo enzimática',
@@ -131,10 +132,10 @@ export const CAPITULOS: Capitulo[] = [
     ],
   },
   {
-    id: 'sem-agulhas',
+    id: 'aparelhos',
     numero: '04',
-    titulo: 'Sem agulhas',
-    resumo: 'Para quem prefere cuidar sem nenhuma agulha.',
+    titulo: 'Aparelhos',
+    resumo: 'Tecnologias que complementam e potencializam o seu protocolo.',
     itens: [
       {
         nome: 'Drenagem linfática',
@@ -145,13 +146,14 @@ export const CAPITULOS: Capitulo[] = [
       {
         nome: 'Ultrassom',
         tag: 'Gordura e celulite',
-        descricao: 'Ondas de ultrassom que ajudam a tratar a gordura localizada e a celulite. Confortável e sem agulhas.',
+        descricao: 'Ondas de ultrassom que ajudam a tratar a gordura localizada e a celulite.',
         mensagem: 'o ultrassom',
       },
       {
         nome: 'Manta térmica',
         tag: 'Potencializa o protocolo',
-        descricao: 'Calor controlado que potencializa os protocolos corporais e deixa a sessão ainda mais relaxante.',
+        descricao:
+          'Calor controlado que potencializa os protocolos corporais, causando vasodilatação e aumento temporário da circulação local, além de favorecer o relaxamento muscular. É utilizada como complemento em protocolos de gordura localizada, celulite e relaxamento corporal.',
         mensagem: 'a manta térmica',
       },
       {

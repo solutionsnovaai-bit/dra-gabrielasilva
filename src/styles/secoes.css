@@ -19,7 +19,17 @@
   font-size: clamp(1.75rem, 3.55vw, 3.45rem); font-weight: 330; font-stretch: 106%; line-height: 1.16; letter-spacing: -.024em;
   text-wrap: pretty;
 }
-@media (max-width: 767px) { .manifesto-grade { grid-template-columns: 1fr; gap: 26px; } .manifesto-grade .rotulo { margin-top: 0; } }
+.manifesto-extra {
+  grid-column: 2; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 4vw, 72px); align-items: start;
+  margin-top: clamp(16px, 2vw, 32px); padding-top: clamp(28px, 3vw, 44px); border-top: 1px solid var(--color-linha);
+}
+.manifesto-extra .lead { max-width: 44ch; }
+.manifesto-fecho span { display: block; }
+@media (max-width: 1023px) { .manifesto-extra { grid-template-columns: 1fr; } }
+@media (max-width: 767px) {
+  .manifesto-grade { grid-template-columns: 1fr; gap: 26px; } .manifesto-grade .rotulo { margin-top: 0; }
+  .manifesto-extra { grid-column: auto; margin-top: 8px; }
+}
 
 /* ---------- Dois universos ---------- */
 .universos { padding-top: 0; }
@@ -312,7 +322,7 @@
 /* ---------- Nutrição ---------- */
 .nutricao { overflow: clip; }
 .nutricao-grade {
-  display: grid; grid-template-columns: 1fr 1fr; grid-template-areas: "cabeca cabeca" "arte corpo" "resultados resultados";
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-areas: "cabeca cabeca" "arte corpo";
   column-gap: clamp(40px, 7vw, 130px); row-gap: clamp(48px, 6vw, 96px); align-items: center;
 }
 .nutricao-cabeca { grid-area: cabeca; display: grid; gap: 24px; justify-items: start; }
@@ -325,25 +335,9 @@
 .nutricao-item-num { font-size: 1.8rem; line-height: 1; color: var(--color-ouro-claro); }
 .nutricao-item-titulo { font-size: 1.28rem; font-weight: 430; font-stretch: 108%; letter-spacing: -.01em; line-height: 1.2; }
 .nutricao-item-texto { margin-top: 6px; color: rgb(237 228 216 / .72); font-size: 1rem; }
-/* antes e depois das dietas */
-.nutricao-resultados { grid-area: resultados; display: grid; gap: 26px; padding-top: clamp(40px, 5vw, 64px); border-top: 1px solid rgb(209 178 122 / .24); }
-.nutricao-resultados-lista { display: flex; gap: clamp(16px, 2vw, 28px); align-items: flex-start; }
-/* a largura de cada um é proporcional à foto, então os dois ficam com a mesma altura */
-.nr-item { flex: var(--ar) 1 0%; min-width: 0; }
-.nr-card { width: 100%; cursor: zoom-in; }
-.nr-card .res-foto { background: rgb(237 228 216 / .06); }
-.nr-card .res-foto::after { background: var(--color-cafe); }
-.nr-card .res-legenda { margin-top: 14px; font-size: .95rem; }
-.nr-card .res-area { color: rgb(237 228 216 / .62); }
-.nr-card:focus-visible { outline-color: var(--color-ouro-claro); }
-@media (hover: hover) { .nr-card:hover .res-ampliar { opacity: 1; transform: none; } }
 @media (max-width: 1023px) {
-  .nutricao-grade { grid-template-columns: 1fr; grid-template-areas: "cabeca" "arte" "corpo" "resultados"; }
+  .nutricao-grade { grid-template-columns: 1fr; grid-template-areas: "cabeca" "arte" "corpo"; }
   .nutricao-arte { max-width: min(460px, 76vw); }
-}
-@media (max-width: 767px) {
-  .nutricao-resultados-lista { flex-direction: column; gap: 30px; }
-  .nr-item { flex: none; width: 100%; }
 }
 
 /* ---------- A Dra. ---------- */
@@ -380,22 +374,26 @@
   .passo-ponto { top: 6px; }
 }
 
-/* ---------- Dúvidas ---------- */
-.duvidas-grade { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(40px, 8vw, 130px); align-items: start; }
-.duvidas-lado { position: sticky; top: calc(var(--topo-h) + 40px); display: grid; gap: 24px; justify-items: start; }
-.duvidas-lista { border-top: 1px solid var(--color-tinta); }
-.duvida { border-bottom: 1px solid var(--color-linha); }
-.duvida h3 { font: inherit; }
-.duvida-botao {
-  width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 20px;
-  padding: 24px 0; text-align: left;
-  font-size: clamp(1.15rem, 1.65vw, 1.5rem); font-weight: 420; font-stretch: 104%; letter-spacing: -.012em; line-height: 1.25;
+/* ---------- Parceiras ---------- */
+.parceiras { padding-top: 0; }
+.parceiras-cabeca .lead { max-width: 42ch; }
+.parceiras-grade { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2vw, 28px); }
+.parceira {
+  display: flex; flex-direction: column; justify-content: space-between; gap: clamp(48px, 6vw, 96px);
+  padding: clamp(26px, 3vw, 48px); border-radius: 4px;
 }
-.duvida-botao .trat-mais { flex: none; }
-@media (hover: hover) { .duvida-botao:hover .trat-mais { border-color: var(--color-cafe); } }
-.duvida-painel { overflow: hidden; }
-.duvida-painel p { padding: 0 60px 28px 0; max-width: 60ch; color: var(--color-tinta-2); }
-@media (max-width: 1023px) { .duvidas-grade { grid-template-columns: 1fr; } .duvidas-lado { position: static; } .duvida-painel p { padding-right: 0; } }
+.parceira-topo { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.parceira-num { font-size: clamp(3rem, 5vw, 5rem); line-height: .8; color: var(--color-ouro-escuro); }
+.parceira-area {
+  font-size: .72rem; font-weight: 560; font-stretch: 125%; letter-spacing: .22em; text-transform: uppercase; color: var(--color-ouro-texto);
+}
+.parceira-nome { font-size: clamp(1.9rem, 3vw, 3rem); font-weight: 300; font-stretch: 110%; letter-spacing: -.035em; line-height: 1.02; }
+.parceira-registro {
+  display: flex; align-items: center; gap: 10px; margin-top: 14px;
+  font-size: .9rem; font-weight: 480; font-stretch: 106%; color: var(--color-tinta-2);
+}
+.parceira-registro::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--color-ouro); flex: none; }
+@media (max-width: 767px) { .parceiras-grade { grid-template-columns: 1fr; } }
 
 /* ---------- Agendar ---------- */
 .agendar { position: relative; overflow: clip; background: var(--color-ouro); color: var(--color-noite); isolation: isolate; }
