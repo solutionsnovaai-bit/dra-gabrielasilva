@@ -144,12 +144,6 @@ export const CAPITULOS: Capitulo[] = [
         mensagem: 'a drenagem linfática',
       },
       {
-        nome: 'Ultrassom',
-        tag: 'Gordura e celulite',
-        descricao: 'Ondas de ultrassom que ajudam a tratar a gordura localizada e a celulite.',
-        mensagem: 'o ultrassom',
-      },
-      {
         nome: 'Manta térmica',
         tag: 'Potencializa o protocolo',
         descricao:
