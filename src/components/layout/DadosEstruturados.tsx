@@ -12,7 +12,7 @@ export default function DadosEstruturados() {
     alternateName: SITE.nome,
     description: SEO.descricao,
     url: `${__SITE_ORIGIN__}/`,
-    image: `${__SITE_ORIGIN__}/og.jpg`,
+    image: `${__SITE_ORIGIN__}/og.jpg?v=2`,
     logo: `${__SITE_ORIGIN__}/icon-512.png`,
     address: {
       '@type': 'PostalAddress', streetAddress: e.rua, addressLocality: e.cidade, addressRegion: e.uf, addressCountry: 'BR',
