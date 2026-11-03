@@ -697,7 +697,7 @@ body{
   var scene = document.getElementById('scene');
   var vid = document.getElementById('vid');
   /* velocidade do vídeo (1 = normal). A linha do tempo segue o tempo do vídeo, então os textos acompanham. */
-  var SPEED = 1.25;
+  var SPEED = 1.4;
   vid.defaultPlaybackRate = SPEED; vid.playbackRate = SPEED;
   vid.addEventListener('loadedmetadata', function () { vid.playbackRate = SPEED; });
   vid.addEventListener('play', function () { if (vid.playbackRate !== SPEED) vid.playbackRate = SPEED; });
