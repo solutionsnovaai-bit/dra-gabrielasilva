@@ -583,6 +583,16 @@ body{
   .atmos::before,.atmos::after{transform:none}
   .js .scene .rig,.js .scene .bar,.gl{transition-duration:.01s!important;transition-delay:0s!important}
 }
+
+/* =====================================================================
+   AJUSTE: 404 e PAGAMENTO PENDENTE sempre no centro da tela
+   ===================================================================== */
+.g404,.gpay{left:50%;top:50%;bottom:auto}
+/* compensa o respiro de cima das letras para o desenho ficar no meio exato */
+.g404{transform:translate(-50%,calc(-50% - .042em))}
+.gpay{transform:translate(-50%,calc(-50% - .02em))}
+@media (max-aspect-ratio:1/1){ .scene{ --g404-size:68vw; } }
+@media (max-aspect-ratio:1/1) and (min-width:700px){ .scene{ --g404-size:66vw; } }
 </style>
 </head>
 <body>
