@@ -123,8 +123,7 @@ function Clinica() {
         <a className="linha-link" href="#avaliacao">Como é a primeira avaliação <ArrowRight size={16} aria-hidden="true" /></a>
       </Revelar>
       <Revelar as="figure" className="sobre-foto">
-        <img src={`${pasta}/bastidores.webp`} width="420" height="315" alt="Profissional da Les Vivée Clinic durante atendimento" loading="lazy" decoding="async" />
-        <figcaption>Registro publicado pela clínica</figcaption>
+        <img src={`${pasta}/marca-texturizada.webp`} width="1024" height="768" alt="Logo Les Vivée Clinic em champanhe dourado sobre fundo marrom texturizado" loading="lazy" decoding="async" />
       </Revelar>
     </div>
   </section>
