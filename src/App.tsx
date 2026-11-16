@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, ArrowUpRight, Droplet, Heart, Instagram, MapPin, Menu, Plus, ScanFace, X } from 'lucide-react'
-import { m } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { ENDERECO_COMPLETO, SITE } from './config/site'
 import { whatsapp } from './lib/whatsapp'
 import { MotionPreferencesProvider, useMotionPreferences } from './hooks/useMotionPreferences'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 import { Botao } from './components/ui/Botao'
 import BrandIcon from './components/ui/BrandIcon'
+import Abertura, { exibirAbertura, registrarAbertura } from './components/Abertura'
 import Revelar, { EASE } from './components/ui/Revelar'
 
 const pasta = '/lesvivee'
@@ -20,8 +21,8 @@ const nav = [
 const cuidados = [
   {
     id: 'facial', title: 'Estética facial', destaque: 'Cuidado para a sua pele.',
-    icon: ScanFace, image: 'facial.webp',
-    alt: 'Detalhe de um atendimento facial do acervo profissional da Les Vivée',
+    icon: ScanFace, image: 'facial-editorial.webp',
+    alt: 'Imagem ilustrativa de uma limpeza facial com disco de algodão',
     text: 'Textura, poros e sensibilidade são pontos que você pode levar para a avaliação. A equipe explica as opções de cuidado para o seu rosto e o que cada procedimento envolve.',
     assuntos: ['Limpeza de pele', 'Dermaplanagem', 'Cuidados com textura e acne'],
     tema: 'estética facial',
@@ -35,19 +36,19 @@ const cuidados = [
   },
   {
     id: 'capilar', title: 'Cuidado capilar', destaque: 'Atenção aos fios e ao couro cabeludo.',
-    icon: Droplet, image: 'capilar.webp',
-    alt: 'Aplicação de luz no couro cabeludo em registro compartilhado pela clínica',
+    icon: Droplet, image: 'capilar-editorial.webp',
+    alt: 'Imagem ilustrativa de uma avaliação do couro cabeludo',
     text: 'Queda, afinamento e mudanças no couro cabeludo podem ter causas diferentes. Na avaliação, conte quando começou a notar a mudança e quais tratamentos já fez.',
     assuntos: ['Queda de cabelo', 'Afinamento dos fios', 'Cuidados com o couro cabeludo'],
     tema: 'avaliação capilar',
   },
 ] as const
 
-const registros = [
-  { image: 'capilar.webp', title: 'Atendimento capilar', alt: 'Detalhe de uma aplicação de luz no couro cabeludo apresentada no perfil da Les Vivée Clinic' },
-  { image: 'facial.webp', title: 'Cuidado facial', alt: 'Mãos com luvas e ponteira utilizadas em um atendimento facial' },
-  { image: 'labial.webp', title: 'Cuidado labial', alt: 'Recorte de lábios de uma publicação de cuidado labial do acervo profissional' },
-  { image: 'bastidores.webp', title: 'Equipe em atendimento', alt: 'Profissional com luvas, óculos e máscara em cena publicada pela Les Vivée Clinic' },
+const registros: { image: string; title: string; alt: string; registro?: boolean }[] = [
+  { image: 'capilar-editorial.webp', title: 'Atendimento capilar', alt: 'Imagem ilustrativa de um aplicador de análise capilar sobre o couro cabeludo' },
+  { image: 'facial-editorial.webp', title: 'Cuidado facial', alt: 'Imagem ilustrativa de uma limpeza de pele no rosto' },
+  { image: 'labial-editorial.webp', title: 'Cuidado labial', alt: 'Imagem ilustrativa de uma avaliação do contorno labial' },
+  { image: 'bastidores.webp', title: 'Equipe em atendimento', registro: true, alt: 'Profissional com luvas, óculos e máscara em cena publicada pela Les Vivée Clinic' },
 ]
 
 const mapa = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ENDERECO_COMPLETO)}`
@@ -154,8 +155,9 @@ function Cuidados() {
       <section key={id} id={id} className={`secao tratamento tratamento-${id}`} aria-labelledby={`titulo-${id}`}>
         <div className="container tratamento-grade">
           <Revelar as="figure" className="tratamento-foto">
-            <img src={`${pasta}/${image}`} width={id === 'corporal' ? 950 : 420} height={id === 'corporal' ? 710 : 315}
+            <img src={`${pasta}/${image}`} width={id === 'corporal' ? 950 : 960} height={id === 'corporal' ? 710 : 720}
               alt={alt} loading="lazy" decoding="async" />
+            {id !== 'corporal' && <figcaption>Imagem ilustrativa</figcaption>}
           </Revelar>
           <Revelar className="secao-intro tratamento-texto">
             <p className="rotulo">{title}</p>
@@ -247,8 +249,8 @@ function Galeria() {
     <div className="container">
       <div className="clinica-topo">
         <Revelar className="secao-intro">
-          <h2 id="clinica-titulo">Nos atendimentos <em>da Les Vivée.</em></h2>
-          <p>Registros de atendimentos compartilhados no perfil da clínica e no acervo da equipe.</p>
+          <h2 id="clinica-titulo">Uma galeria <em>dos cuidados.</em></h2>
+          <p>Imagens ilustrativas dos cuidados e um registro publicado pela equipe da Les Vivée.</p>
         </Revelar>
         <div className="galeria-controles">
           <button type="button" aria-label="Foto anterior" aria-controls="galeria" disabled={bordas.inicio} onClick={() => mover(-1)}><ArrowLeft size={20} aria-hidden="true" /></button>
@@ -261,7 +263,10 @@ function Galeria() {
         mover(e.key === 'ArrowLeft' ? -1 : 1)
       }}>
         {registros.map(foto => <li key={foto.image}>
-          <figure><img src={`${pasta}/${foto.image}`} width="420" height="315" alt={foto.alt} loading="lazy" decoding="async" /><figcaption>{foto.title}</figcaption></figure>
+          <figure>
+            <img src={`${pasta}/${foto.image}`} width={foto.registro ? 420 : 960} height={foto.registro ? 315 : 720} alt={foto.alt} loading="lazy" decoding="async" />
+            <figcaption>{foto.title}<small>{foto.registro ? 'Registro da clínica' : 'Imagem ilustrativa'}</small></figcaption>
+          </figure>
         </li>)}
       </ul>
       <a className="linha-link" href={SITE.instagram} target="_blank" rel="noreferrer"><Instagram size={17} aria-hidden="true" /> Seguir @lesvivee <ArrowUpRight size={15} aria-hidden="true" /></a>
@@ -311,13 +316,23 @@ function Rodape() {
 }
 
 function Site() {
-  useSmoothScroll(true)
+  const { reduced } = useMotionPreferences()
+  const [aberta, setAberta] = useState(exibirAbertura)
+  const tocando = aberta && !reduced
+  const concluir = useCallback(() => {
+    registrarAbertura()
+    setAberta(false)
+  }, [])
+  useSmoothScroll(!tocando)
   return <>
-    <a className="pular-link" href="#conteudo">Pular para o conteúdo</a>
-    <Topo />
-    <main id="conteudo"><Hero /><Clinica /><Cuidados /><Avaliacao /><Galeria /><Duvidas /><Endereco /></main>
-    <Rodape />
-    <a className="whatsapp-fab" href={whatsapp()} target="_blank" rel="noreferrer" aria-label="Agendar avaliação pelo WhatsApp"><BrandIcon brand="whatsapp" /></a>
+    <AnimatePresence>{tocando && <Abertura onConcluir={concluir} />}</AnimatePresence>
+    <div inert={tocando}>
+      <a className="pular-link" href="#conteudo">Pular para o conteúdo</a>
+      <Topo />
+      <main id="conteudo"><Hero /><Clinica /><Cuidados /><Avaliacao /><Galeria /><Duvidas /><Endereco /></main>
+      <Rodape />
+      <a className="whatsapp-fab" href={whatsapp()} target="_blank" rel="noreferrer" aria-label="Agendar avaliação pelo WhatsApp"><BrandIcon brand="whatsapp" /></a>
+    </div>
   </>
 }
 

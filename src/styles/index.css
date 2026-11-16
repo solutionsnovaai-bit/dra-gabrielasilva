@@ -295,3 +295,50 @@ h1 em, h2 em { display: block; color: var(--bronze); font-weight: 500; }
 .movimento-pausado *, .movimento-pausado *::before, .movimento-pausado *::after {
   animation-duration: 0s !important; transition-duration: 0s !important; scroll-behavior: auto !important;
 }
+
+.tratamento-foto figcaption { padding-top: 8px; font-size: .75rem; color: var(--suave); }
+.tratamento-capilar .tratamento-foto figcaption { color: #e5c9ad; }
+.galeria figcaption small { display: block; font-weight: 500; color: var(--suave); margin-top: 1px; }
+.abertura-les {
+  position: fixed;
+  z-index: 30;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 46% 36%, #70503c 0%, #4d3529 48%, #34241d 100%);
+  color: #f5e2c2;
+}
+.abertura-les::before {
+  content: '';
+  position: absolute;
+  inset: clamp(13px, 3vw, 44px);
+  border: 1px solid #ddbd8763;
+  pointer-events: none;
+}
+.abertura-les-marca { position: relative; width: min(70vw, 397px); }
+.abertura-les-marca img { width: 100%; height: auto; }
+.abertura-les-reflexo {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  mask: url('/lesvivee/marca-hero.webp') center / contain no-repeat;
+}
+.abertura-les-reflexo span {
+  position: absolute; display: block; width: 58%; height: 100%;
+  background: linear-gradient(104deg, transparent 25%, #fff4d693 47%, transparent 66%);
+}
+.abertura-les-pular {
+  position: absolute;
+  right: max(22px, calc(4.8vw + env(safe-area-inset-right)));
+  bottom: max(23px, calc(5svh + env(safe-area-inset-bottom)));
+  min-height: 44px;
+  padding: 5px 12px;
+  border: 1px solid #e9d2a480;
+  border-radius: 3px;
+  font-size: .79rem;
+  color: #f5e2c2;
+  background: #453024;
+  cursor: pointer;
+}
+.abertura-les-pular:hover { border-color: #ead5ad; background: #5d4130; }
+.abertura-les-pular:focus-visible { outline-color: #f2d6a8; }
