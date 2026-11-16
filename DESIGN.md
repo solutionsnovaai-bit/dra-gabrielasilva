@@ -1,5 +1,5 @@
 # Direção visual
 
-A geometria e o lettering da marca partem do logo fornecido. As versões SVG melhoram a leitura em diferentes escalas. O acabamento champanhe do hero e o marrom sobre creme reproduzem a família de cores do material original.
+A imagem da marca preserva o símbolo e o lettering da referência com acabamento fotográfico champanhe em relevo sobre marrom texturizado. A versão opaca aparece na navegação e no rodapé. A versão recortada da mesma arte aparece sobre o hero.
 
-A capa desktop usa uma composição deitada com o retrato à direita. A composição mobile tem enquadramento vertical independente. As duas colocam o arquivo vetorial da marca sobre a imagem editorial. O carrossel usa recortes dos prints enviados, sem alterar registros de procedimento ou atribuir resultados.
+As capas desktop e mobile usam imagens editoriais com enquadramentos próprios. Os registros da galeria são recortes dos prints fornecidos. A composição de toalhas e pedra é editorial e ilustra a seção de cuidado corporal. A página detalha cuidados faciais, corporais e capilares, a primeira avaliação, perguntas frequentes e endereço com mapa.
