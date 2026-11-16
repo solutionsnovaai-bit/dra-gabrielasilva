@@ -1,14 +1,8 @@
-import { MENSAGENS, SITE } from '../config/site'
+import { SITE } from '../config/site'
 
-const numero = SITE.whatsapp.replace(/\D/g, '')
-export const temWhatsApp = /^\d{12,13}$/.test(numero)
-
-if (import.meta.env.DEV && !temWhatsApp) {
-  console.warn('[site] Preencha SITE.whatsapp em src/config/site.ts (55 + DDD + número).')
-}
-
-/** Link do WhatsApp com a mensagem pronta. */
-export function waLink(mensagem: string = MENSAGENS.padrao) {
-  const texto = encodeURIComponent(mensagem)
-  return temWhatsApp ? `https://wa.me/${numero}?text=${texto}` : `https://wa.me/?text=${texto}`
+export function whatsapp(assunto?: string) {
+  const mensagem = assunto
+    ? `Olá! Vim pelo site da Les Vivée Clinic e gostaria de saber mais sobre ${assunto}.`
+    : 'Olá! Vim pelo site da Les Vivée Clinic e gostaria de agendar uma avaliação.'
+  return `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(mensagem)}`
 }
