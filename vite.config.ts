@@ -24,6 +24,11 @@ function dadosDaClinica(origin?: string): Plugin {
         '<meta property="og:image:width" content="1200" />',
         '<meta property="og:image:height" content="630" />',
         '<meta property="og:image:alt" content="Les Vivée Clinic, estética avançada no Tatuapé" />',
+        '<meta name="twitter:card" content="summary_large_image" />',
+        `<meta name="twitter:title" content="${html(SEO.titulo)}" />`,
+        `<meta name="twitter:description" content="${html(SEO.descricao)}" />`,
+        `<meta name="twitter:image" content="${html(origin)}/lesvivee/compartilhar.jpg" />`,
+        '<meta name="twitter:image:alt" content="Les Vivée Clinic, estética avançada no Tatuapé" />',
       ].join('\n    ') : ''
       return Object.entries(dados).reduce((s, [k, v]) => s.replaceAll(k, v), page).replace('<!-- __URL_METADATA__ -->', meta)
     },
@@ -31,7 +36,7 @@ function dadosDaClinica(origin?: string): Plugin {
 }
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', 'VITE_')
-  const publicUrl = env.VITE_LES_VIVEE_URL
+  const publicUrl = env.VITE_LES_VIVEE_URL || 'https://lesviveeclinic.vercel.app'
   const origin = publicUrl ? new URL(publicUrl) : undefined
   if (origin && !['http:', 'https:'].includes(origin.protocol)) throw new Error('VITE_LES_VIVEE_URL precisa usar HTTP ou HTTPS.')
   return {
